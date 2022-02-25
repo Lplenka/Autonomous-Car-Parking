@@ -1,9 +1,9 @@
 # Meeting Minutes
 ## Meeting Information
-**Meeting Date/Time:** 02/24/2022, 16:30   
-**Meeting Purpose:** Discuss ideas for group project  
-**Meeting Location:** MS Teams  
-**Note Taker:** Mayuresh  
+**Meeting Date/Time:** DD/MM/YYYY, HH:MM   
+**Meeting Purpose:** Meeting purporse 
+**Meeting Location:** Meeting location  
+**Note Taker:** People  
 
 ## Attendees
 People who attended:
@@ -13,18 +13,13 @@ People who attended:
 * Samridh
 
 ### Notes
-
-- Discussed possible topics for group project
-    - All agreed with car parking topic and decided to discuss the idea with professor tomorrow after lecture
-- Lalu briefed about Genetic algorithm
-- Others to find more about algorithm which can be used for car parking
-	- Possible algorithms: Monte Carlo Tree Search, Rule Based, Actor-Critic RL
+- 
 
 
 ## Action Items
 | Done? | Item | Responsible | Due Date |
 | ---- | ---- | ---- | ---- |
-| | Research about possible algorithms | All | 02/25/2022 |
+| [x] | Item1 | People | DD/MM/YYYY |
 
 ## Other Notes & Information
 N/A
