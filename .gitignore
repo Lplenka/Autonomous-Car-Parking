@@ -30,6 +30,7 @@ ipython_config.py
 *.cb
 *.cb2
 .*.lb
+.idea/
 
 ## Intermediate documents:
 *.dvi
