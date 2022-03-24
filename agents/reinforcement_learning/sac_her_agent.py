@@ -37,7 +37,7 @@ model = model_class(
 )
 
 # Train the model
-model.learn(1000)
+model.learn(100000)
 
 model.save("./her_car_env")
 # Because it needs access to `env.compute_reward()`
