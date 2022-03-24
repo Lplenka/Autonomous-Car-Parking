@@ -23,7 +23,9 @@ This repo contains the code for our AI project titled "AI algorithms for Autonom
 
 ## Installation
 #### Conda
+Move to the root folder
 ```
 conda create --name aiproject python=3.6
+conda activate aiproject
 pip install -r requirements.txt
 ```
