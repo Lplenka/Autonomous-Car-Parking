@@ -7,12 +7,13 @@ This repo contains the code for our AI project titled "AI algorithms for Autonom
 ├── agents
 │   ├── reinforcement_learning
 │   │   ├── sac_her_agent.py
+│   │   ├── a2c_agent.py
 │   ├── genetic_algorithm
 │   ├── monte_carlo_tree_search
 ├── minutes
 ├── notebooks
 │       ├── reinforcement_learning
-│   │   ├── sample.ipynb
+│   │   ├── parking_sac_her.ipynb
 │   ├── genetic_algorithm
 │   ├── monte_carlo_tree_search
 ├── report
@@ -25,7 +26,7 @@ This repo contains the code for our AI project titled "AI algorithms for Autonom
 #### Conda
 Move to the root folder
 ```
-conda create --name aiproject python=3.6
+conda create --name aiproject python=3.8
 conda activate aiproject
 pip install -r requirements.txt
 ```
