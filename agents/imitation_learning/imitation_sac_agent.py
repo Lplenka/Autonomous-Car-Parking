@@ -14,7 +14,6 @@ from imitation.data.wrappers import RolloutInfoWrapper
 from sb3_contrib import TQC
 import time
 
-# env = gym.make("CartPole-v1")
 env_original = gym.make("parking-v0")
 env_custom = gym.make("parkingcustom-v0")
 
@@ -46,34 +45,9 @@ bc_trainer = bc.BC(
 # print(f"Reward before training: {reward}")
 
 print("Training a policy using Behavior Cloning")
-bc_trainer.train(n_epochs=100)
+bc_trainer.train(n_epochs=300)
 
 reward, _ = evaluate_policy(bc_trainer.policy, env_custom, n_eval_episodes=3, render=True)
 print(f"Reward after training: {reward}")
 
 bc_trainer.save_policy("imitation_her_car_env")
-
-def record_video(env_id, model, video_length=600, prefix=str(int((time.time()))), video_folder='./'):
-  """
-  :param env_id: (str)
-  :param model: (RL model)
-  :param video_length: (int)
-  :param prefix: (str)
-  :param video_folder: (str)
-  """
-  eval_env = DummyVecEnv([lambda: gym.make(env_id)])
-  # Start the video at step=0 and record 500 steps
-  eval_env = VecVideoRecorder(eval_env, video_folder=video_folder,
-                              record_video_trigger=lambda step: step == 0, video_length=video_length,
-                              name_prefix=prefix)
-
-  obs = eval_env.reset()
-  for _ in range(video_length):
-    action, _ = model.predict(obs)
-    obs, _, _, _ = eval_env.step(action)
-
-  # Close the video recorder
-  eval_env.close()
-
-
-record_video("parkingcustom-v0", bc_trainer)
