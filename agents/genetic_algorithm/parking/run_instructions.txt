@@ -1,0 +1,14 @@
+Use parking_train.py file to evaluate fitness for generations.
+Things to change/update in order to improvise performance.
+episodes - line 18
+population size - line 72
+gernerations - line 73
+
+mutation and crossover rate - 75,76.
+run parking_train
+-------------------------------------
+
+you will see run for multiple generations...it will save best model run in /models folder...with their best score....get its name.
+go over to parking_test
+update line 36
+and run parking_test with the updated model.
