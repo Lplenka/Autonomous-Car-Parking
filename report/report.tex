@@ -7,7 +7,7 @@
 \title{Autonomous Car Parking
 }
 \subtitle{CS7IS2 Project (2021/2022)}
-\author{Mayuresh Shelke, Ming Jun Lim, Lalu Prasad Lenka, Samridh James}
+\author{Mayuresh Shelke, Ming Jun Lim, Lalu Prasad Lenka and Samridh James}
 
 \institute{
 \email{shelkem@tcd.ie}, \email{limm5@tcd.ie}, \email{lplenka@tcd.ie}, \email{jamessa@tcd.ie}}
@@ -21,7 +21,7 @@ Motivation behind the work, high level description of the problem, how it was so
 % TODO: Motivation behind the work
 % TODO: High level description of the problem
 % TODO: How it was solved by the proposed algorithms
-\keywords{Soft-Actor-Critic (SAC), Behaviour Cloning, Evolutionary Algorithm, parking}
+\keywords{soft-actor-critic, behaviour cloning, evolutionary algorithm, parking}
 \end{abstract}
 %
 
@@ -50,22 +50,26 @@ Motivation behind the work, high level description of the problem, how it was so
 %
 % TODO: Motivations behind this work
 The Autonomous Vehicle (AV) industry is one of the most active and promising area in the recent years with many ongoing research to make it fully autonomous \cite{talavera2021autonomous}. The International Society of Automotive Engineers (SAE) proposed a six-degree autonomy scale with level 0 as no automation and level 5 as full automation without any human interventions \cite{stoma2021future}. The current level of autonomy scale achieved today is between level 2 and 3 requiring some assistance from the driver and limited to ideal conditions.
-%
-% TODO: What is the relevant problem that you are investigating
-Car parking is challenging and disliked by most drivers due to time required searching for spaces, risk of scratching vehicle, safety of pedestrian, etc \cite{baburaj2021smart}\cite{bosch_global_2022}.
-%
-% TODO: Why is it relevant
-Most vehicles are parked $95\%$ throughout the lifetime \cite{choi2019self}. Parking is required by every driver and apply AV will greatly improve the quality of life and ease of drivers.
 
-The highway-env github repository\footnote{https://github.com/eleurent/highway-env} contains a collection of autonomous driving and tactical decision-making tasks environment \cite{highway-env}. The parking environment\footnote{id of "parking-v0"} is the selected for the project which is a goal-conditioned continuous control task in a given space with a vehicle aiming to reach the destination point. 
+% TODO: What is the relevant problem that you are investigating
+Car parking is challenging and disliked by most drivers due to time required searching for spaces, risk of scratching vehicle, safety of pedestrian, etc \cite{baburaj2021smart}\cite{bosch_global_2022}. It requires the driver to estimate the space required for the car and manoeuvre it into available space by controlling the steering angle and accelerator. While in fact the traffic report statistics survery results found in 12 million traffic accidents, there are about 10,000 traffic accidents occurring in the parking lots with many more number of accidents not reported \cite{wang2014automatic}.
+
+% TODO: Why is it relevant
+Most vehicles are parked $95\%$ throughout the lifetime \cite{choi2019self}. Parking is required by every driver and apply AV will greatly improve the quality of life and ease of drivers. It increases driving safety by utilising various sensors to understand the environment surround vehicle and park at the designated space avoid collisions due to lack of human experiences \cite{wang2014automatic}. Other potential application for autonomous car parking is saving spaces in car parking lots by parking in an optimal grid resulting in a much efficient parking lot capable of more car \cite{choi2019self}.
 
 % TODO: Introduce background information required to understand the problem and concepts that you will developed
-
+The highway-env github repository\footnote{https://github.com/eleurent/highway-env} contains a collection of autonomous driving and tactical decision-making tasks environment \cite{highway-env}. The parking environment\footnote{id of "parking-v0"} is selected for the project which is a goal-conditioned continuous control task in a given space with a vehicle aiming to reach the destination point. The parking environment uses a grid like layout similar to actual car parks. the vehicle requires input of the steering angle and accelerator. The selected algorithms to be investigated in the project are Soft-Actor-Critic (SAC) from the reinforcement learning family, behaviour cloning from the imitation family and evolutionary algorithm from the genetic population-based family.
 % TODO: Include link to recording of presentation
 
 \section{Related Work}
 %In this section you will discuss possible approaches to solve the problem you are addressing, justifying your choice of the 3 you have selected to evaluate. Also, briefly introduce the approaches you are evaluating with a specific emphasis on differences and similarities to the proposed approach(es).
 Related work
+
+% TODO: Soft-Actor-Critic (SAC) related works
+
+% TODO: Behaviour Cloning related works
+
+% TODO: Eehaviour Aloning related works
 
 \section{Problem Definition and Algorithm}
 Problem definition and algorithm
