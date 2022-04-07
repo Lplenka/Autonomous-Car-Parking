@@ -7,6 +7,7 @@ from individual import roulette_wheel_selection, crossover, mutation, Individual
 from population import Population
 from base_nn import NeuralNetwork
 from mlp import MLP,DeepMLPTorch,MLPTorch
+import torch
 
 
 
@@ -23,10 +24,16 @@ class MLPIndividual(Individual):
         for _ in range(n_episodes):
             if render:
                 env.render()
+            # action = self.nn.forward(obs)
+            # # obs, reward, done, _ = env.step(round(action.item()))
+            # obs, reward, done, _ = env.step(action)
+            if type(obs) == dict:
+                obs = obs["observation"]
+            obs = torch.from_numpy(obs).float()
             action = self.nn.forward(obs)
-            # obs, reward, done, _ = env.step(round(action.item()))
-            obs, reward, done, _ = env.step(action)
-            obs = obs["observation"]
+            action = action.detach().numpy()
+            obs, reward, done, _ = env.step(action)    
+
             fitness = reward
             if done:
                 break
