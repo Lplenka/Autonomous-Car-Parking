@@ -58,7 +58,7 @@ The Autonomous Vehicle (AV) industry is one of the most active and promising are
 Car parking is challenging and disliked by most drivers due to time required searching for spaces, risk of scratching vehicle, safety of pedestrian, etc \cite{baburaj2021smart}\cite{bosch_global_2022}. It requires the driver to estimate the space required for the car and manoeuvre it into available space by controlling the steering angle and accelerator. While in fact the traffic report statistics survery results found in 12 million traffic accidents, there are about 10,000 traffic accidents occurring in the parking lots with many more number of accidents not reported \cite{wang2014automatic}.
 
 % TODO: Why is it relevant
-Most vehicles are parked $95\%$ throughout the lifetime \cite{choi2019self}. Parking is required by every driver and apply AV will greatly improve the quality of life and ease of drivers. It increases driving safety by utilising various sensors to understand the environment surround vehicle and park at the designated space avoid collisions due to lack of human experiences \cite{wang2014automatic}. Other potential application for autonomous car parking is saving spaces in car parking lots by parking in an optimal grid resulting in a much efficient parking lot capable of more car \cite{choi2019self}.
+Most vehicles are parked $95\%$ throughout the lifetime \cite{choi2019self}. Parking is required by every driver and applying AV will greatly improve the quality of life and ease of drivers. It increases driving safety by utilising various sensors to understand the environment surrounding vehicle and park at the designated space avoid collisions due to lack of human experiences \cite{wang2014automatic}. Other potential application for autonomous car parking is saving spaces in car parking lots by parking in an optimal grid resulting in a much efficient parking lot capable of more car \cite{choi2019self}.
 
 % TODO: Introduce background information required to understand the problem and concepts that you will developed
 The highway-env github repository\footnote{https://github.com/eleurent/highway-env} contains a collection of autonomous driving and tactical decision-making tasks environment \cite{highway-env}. The parking environment\footnote{id of "parking-v0"} is selected for the project which is a goal-conditioned continuous control task in a given space with a vehicle aiming to reach the destination point. The parking environment uses a grid like layout similar to actual car parks. the vehicle requires input of the steering angle and accelerator. Policy based algorithm is commonly used for autonomous vehicles instead of value based algorithm due its large action decision requiring huge memory \cite{takehara2021autonomous}.
@@ -112,13 +112,17 @@ Equation \ref{eq:bc_dataset} describes the dataset represented by a set of contr
 \end{equation}
 The quadratic loss function also known as $\ell_2$-loss or least squares (LS) in equation (\ref{eq:bc_l2}) is commonly used as an objective function and most optimiser libraries include additional regularisation term. The $x$ terms are vectors and loss calculates the action from agent's policy $x^L$ against expert's action $x^{demo}$. Other loss functions can be used as the object function such as $\ell_1$-loss, cross entropy loss, hinge loss, etc.
 
-%\begin{algorithm}
-%  \caption{Behaviour Cloning algorithm abstract \cite{osa2018algorithmic}}
-%  \label{alg:bc_abstract}
-%  \begin{algorithmic}[1]
-%    \STATE Create dataset $\mathcal{D}$ set of trajectories from expert  \label{op0}
-%  \end{algorithmic}
-%\end{algorithm}
+\begin{algorithm}
+  \caption{Behaviour Cloning algorithm}
+  \label{alg:bc_abstract}
+  \begin{algorithmic}[1]
+    \STATE expert\_trajectory $\mathcal{D}$ $\leftarrow$ sample from expert's policy from environment \label{op0}
+    \STATE agent\_policy $\pi_\theta$ $\leftarrow$ initialise a random policy parameters $\theta$ \label{op1}
+    \STATE train agent\_policy $\theta$ dataset expert\_trajectory $\mathcal{D}$  \label{op2}
+    \STATE save optimised agent\_policy $\theta$ \label{op4}
+  \end{algorithmic}
+\end{algorithm}
+The algorithm (\ref{alg:bc_abstract}) is a high-level pseudo-code of the behaviour cloning approach. Line \emph{3} uses supervised learning algorithms with hyper-parameters such as objective function $\mathcal{L}$, optimiser, network architecture, etc.
 
 \subsection{Evolutionary Algorithm}
 
