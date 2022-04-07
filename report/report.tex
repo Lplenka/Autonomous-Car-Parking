@@ -43,6 +43,7 @@ Motivation behind the work, high level description of the problem, how it was so
 %\end{description}
 
 \section{Introduction}
+\label{sec:introduction}
 %In this section, you should introduce your work: what are the motivations behind this work? What is the relevant problem that you are investigating? Why is it relevant? 
 %Briefly, introduce the background information required to understand the problem and the concepts that you will develop. 
 %
@@ -62,14 +63,16 @@ The highway-env github repository\footnote{https://github.com/eleurent/highway-e
 % TODO: Include link to recording of presentation
 
 \section{Related Work}
-%In this section you will discuss possible approaches to solve the problem you are addressing, justifying your choice of the 3 you have selected to evaluate. Also, briefly introduce the approaches you are evaluating with a specific emphasis on differences and similarities to the proposed approach(es).
-Related work
+% In this section you will discuss possible approaches to solve the problem you are addressing, 
+% justifying your choice of the 3 you have selected to evaluate. 
+% Also, briefly introduce the approaches you are evaluating with a specific emphasis on differences and similarities to the proposed approach(es).
+The autonomous vehicle control system consists of mission trajectory planning system generating path for vehicle to reach target, navigation system detecting environment and either moving or fixed target and trajectory tracking controller to navigate the vehicle accordingly \cite{lin2018path}. Path planning problem is the main subject of most autonomous vehicle studies. Prior to path planning, the algorithm needs to know the state of the vehicle such as its position and direction. GPS is commonly used to deduce the state by using signals Line Of Sight (LOS) from positioning satellite but not possible in the context of indoor parking lots \cite{correa2017autonomous}. Instead other data be used to monitor the state of vehicle such as vision-based sensors and LiDAR sensors \cite{chan2021review}. The works related to autonomous car parking uses different inputs and types algorithm families, this section will mainly focus on selected algorithms in Section \ref{sec:introduction}.
 
 % TODO: Soft-Actor-Critic (SAC) related works
 
 % TODO: Behaviour Cloning related works
 
-% TODO: Eehaviour Aloning related works
+% TODO: Evolutionary algorithm related works
 
 \section{Problem Definition and Algorithm}
 Problem definition and algorithm
