@@ -1,5 +1,7 @@
 \documentclass{svproc}
+\usepackage{hyperref}
 \usepackage{url}
+\usepackage{algorithm,algorithmic}% http://ctan.org/pkg/algorithms
 \def\UrlFont{\rmfamily}
 
 \begin{document}
@@ -56,7 +58,7 @@ The Autonomous Vehicle (AV) industry is one of the most active and promising are
 Car parking is challenging and disliked by most drivers due to time required searching for spaces, risk of scratching vehicle, safety of pedestrian, etc \cite{baburaj2021smart}\cite{bosch_global_2022}. It requires the driver to estimate the space required for the car and manoeuvre it into available space by controlling the steering angle and accelerator. While in fact the traffic report statistics survery results found in 12 million traffic accidents, there are about 10,000 traffic accidents occurring in the parking lots with many more number of accidents not reported \cite{wang2014automatic}.
 
 % TODO: Why is it relevant
-Most vehicles are parked $95\%$ throughout the lifetime \cite{choi2019self}. Parking is required by every driver and apply AV will greatly improve the quality of life and ease of drivers. It increases driving safety by utilising various sensors to understand the environment surround vehicle and park at the designated space avoid collisions due to lack of human experiences \cite{wang2014automatic}. Other potential application for autonomous car parking is saving spaces in car parking lots by parking in an optimal grid resulting in a much efficient parking lot capable of more car \cite{choi2019self}.
+Most vehicles are parked $95\%$ throughout the lifetime \cite{choi2019self}. Parking is required by every driver and applying AV will greatly improve the quality of life and ease of drivers. It increases driving safety by utilising various sensors to understand the environment surrounding vehicle and park at the designated space avoid collisions due to lack of human experiences \cite{wang2014automatic}. Other potential application for autonomous car parking is saving spaces in car parking lots by parking in an optimal grid resulting in a much efficient parking lot capable of more car \cite{choi2019self}.
 
 % TODO: Introduce background information required to understand the problem and concepts that you will developed
 The highway-env github repository\footnote{https://github.com/eleurent/highway-env} contains a collection of autonomous driving and tactical decision-making tasks environment \cite{highway-env}. The parking environment\footnote{id of "parking-v0"} is selected for the project which is a goal-conditioned continuous control task in a given space with a vehicle aiming to reach the destination point. The parking environment uses a grid like layout similar to actual car parks. the vehicle requires input of the steering angle and accelerator. Policy based algorithm is commonly used for autonomous vehicles instead of value based algorithm due its large action decision requiring huge memory \cite{takehara2021autonomous}.
@@ -67,22 +69,62 @@ The selected algorithms to be investigated in the project are Soft-Actor-Critic 
 % In this section you will discuss possible approaches to solve the problem you are addressing, 
 % justifying your choice of the 3 you have selected to evaluate. 
 % Also, briefly introduce the approaches you are evaluating with a specific emphasis on differences and similarities to the proposed approach(es).
-The autonomous vehicle control system consists of mission trajectory planning system generating path for vehicle to reach target, navigation system detecting environment and either moving or fixed target and trajectory tracking controller to navigate the vehicle accordingly \cite{lin2018path}. Path planning problem is the main subject of most autonomous vehicle studies. Prior to path planning, the algorithm needs to know the state of the vehicle such as its position and direction. GPS is commonly used to deduce the state by using signals Line Of Sight (LOS) from positioning satellite but not possible in the context of indoor parking lots \cite{correa2017autonomous} and high-rise buildings \cite{saksena2019towards}. Instead other data be used to monitor the state of vehicle such as vision-based sensors and LiDAR sensors \cite{chan2021review}. The works related to autonomous car parking uses different inputs and types algorithm families, this section will mainly focus on selected algorithms in Section \ref{sec:introduction}.
+The autonomous vehicle control system consists of mission trajectory planning system generating path for vehicle to reach target, navigation system detecting environment and either moving or fixed target and trajectory tracking controller to navigate the vehicle accordingly \cite{lin2018path}. Path planning problem is the main subject of most autonomous vehicle studies. Prior to path planning, the algorithm needs to know the state of the vehicle such as its position and direction. GPS is commonly used to deduce the state by using signals Line Of Sight (LOS) from positioning satellite but not possible in the context of indoor parking lots \cite{correa2017autonomous} and high-rise buildings \cite{saksena2019towards}. Instead other data such as vision-based sensors and LiDAR sensors are used to monitor the state of vehicle \cite{chan2021review}. The works related to autonomous car parking uses different inputs and types algorithm families, this section mainly focuses on selected algorithms mentioned in Section \ref{sec:introduction}.
 
 % TODO: Soft-Actor-Critic (SAC) related works
 
 % TODO: Behaviour Cloning related works
-Behaviour Cloning (BC) is from the Imitation learning family which uses observations from the expert to learn \cite{torabi2018behavioral}. In paper \cite{saksena2019towards} trains a Recurrent Convolutional Network for autonomous driving in lane changing context by using BC to learn from human experts driving vehicles. The paper noted the ease of changing architecture when using BC technique and found that spatio-temporal properties worked well in dynamic environments. The huge advantage of BC algorithm is its end-to-end trainable architecture which uses supervised learning to learn policies from an expert by inferring expert's actions \cite{codevilla2019exploring}\cite{farag2018behavior}\cite{ly2020learning}\cite{saksena2019towards}. However the BC approach suffers from several limitations such as over-fitting and generalisation issue \cite{codevilla2019exploring}. BC algorithm is a simple yet effective approach in the project and it can be used to learn the other algorithms selected in the project.
-
-%The paper focuses more on spatio-temporal perception property from the network architecture to work accordingly in the dynamic environments and ease of changing the architecture when using BC technique.
-%The paper noted that BC model has poor generalisation ability and suffers in unseen scenarios. 
-%It uses BC as a means of extracting information from the raw data and an input for training the proposed network architecture.
+Behaviour Cloning (BC) is from the Imitation learning family which uses observations from the expert to learn \cite{torabi2018behavioral}. In paper \cite{saksena2019towards} trains a Recurrent Convolutional Network for autonomous driving in lane changing context by using BC to learn from human experts driving vehicles. The paper noted the ease of changing architecture when using BC technique and found that spatio-temporal properties worked well in dynamic environments. The huge advantage of BC algorithm is its end-to-end trainable architecture which uses supervised learning to learn policies from an expert by inferring expert's actions \cite{codevilla2019exploring}\cite{farag2018behavior}\cite{ly2020learning}\cite{saksena2019towards}. However the BC approach suffers from several limitations such as over-fitting and generalisation issue \cite{codevilla2019exploring}. BC algorithm is a simple yet effective approach in the project and it can be used to learn the policies created from other algorithms selected in the project.
 
 % TODO: Evolutionary algorithm related works
+%
 
 \section{Problem Definition and Algorithm}
 Problem definition and algorithm
 %This section formalises the problem you are addressing and the models used to solve it. This section should provide a technical discussion of the chosen/implemented algorithms. A pseudocode description of the algorithm(s) can also be beneficial to a clear explanation. It is also possible to provide one example that clarifies the way an algorithm works. It is important to highlight in this section the possible parameters involved in the model and their impact, as well as all the implementation choices that can impact the algorithm.
+
+\subsection{Soft-Actor-Critic Algorithm}
+
+\subsection{Behaviour Cloning Algorithm}
+Behaviour Cloning (BC) generates trajectory by learning policy from direct mapping of states to actions without recovering reward function of the expert \cite{osa2018algorithmic}.
+
+\begin{equation}
+\tau^d = \pi(s)
+\label{eq:bc_general_goal}
+\end{equation}
+
+\begin{equation}
+\upsilon_t = \pi(x_t)
+\label{eq:bc_goal}
+\end{equation}
+Equation (\ref{eq:bc_general_goal}) is the general aim of BC algorithm to generate trajectory of agent by learning policy for a given state. The goal of BC for the project car parking in an action-state space can be formulated as equation (\ref{eq:bc_goal}) to generate control input $\upsilon_t$ using policy $\pi$ given the current state $x_t$. The driving task for BC can be treated as a supervised learning problem \cite{ly2020learning}\cite{osa2018algorithmic}\cite{saksena2019towards}. 
+
+The abstract of BC algorithm described in \cite{osa2018algorithmic} requires a dataset of trajectories from the expert $\mathcal{D}$, policy representation $\pi_\theta$ and objective function $\mathcal{L}$. The result is an optimised policy parameters $\theta$ trained using the dataset $\mathcal{D}$ by optimising the objective function $\mathcal{L}$.
+%
+\begin{equation}
+\mathcal{D} = \{ (\upsilon_i^*, s_i^*) \}^M_{i=1} = d^{\pi^*}
+\label{eq:bc_dataset}
+\end{equation}
+Equation \ref{eq:bc_dataset} describes the dataset represented by a set of control input ($\upsilon_i$) and state ($s_i$) pair from the trajectories of the expert. The policy of the expert is used as the ground truth reward and assumed to be near the optimal policy $\pi^*$ \cite{lecture6789wen}.
+\begin{equation}
+\ell(x^L,x^{demo}) = (x^L - x^{demo})^T(x^L-x^{demo})
+\label{eq:bc_l2}
+\end{equation}
+The quadratic loss function also known as $\ell_2$-loss or least squares (LS) in equation (\ref{eq:bc_l2}) is commonly used as an objective function and most optimiser libraries include additional regularisation term. The $x$ terms are vectors and loss calculates the action from agent's policy $x^L$ against expert's action $x^{demo}$. Other loss functions can be used as the object function such as $\ell_1$-loss, cross entropy loss, hinge loss, etc.
+
+\begin{algorithm}
+  \caption{Behaviour Cloning algorithm}
+  \label{alg:bc_abstract}
+  \begin{algorithmic}[1]
+    \STATE expert\_trajectory $\mathcal{D}$ $\leftarrow$ sample from expert's policy from environment \label{op0}
+    \STATE agent\_policy $\pi_\theta$ $\leftarrow$ initialise a random policy parameters $\theta$ \label{op1}
+    \STATE train agent\_policy $\theta$ dataset expert\_trajectory $\mathcal{D}$  \label{op2}
+    \STATE save optimised agent\_policy $\theta$ \label{op4}
+  \end{algorithmic}
+\end{algorithm}
+The algorithm (\ref{alg:bc_abstract}) is a high-level pseudo-code of the behaviour cloning approach. Line \emph{3} uses supervised learning algorithms with hyper-parameters such as objective function $\mathcal{L}$, optimiser, network architecture, etc.
+
+\subsection{Evolutionary Algorithm}
 
 %\subsection{Subsection Title}
 
