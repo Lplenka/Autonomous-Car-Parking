@@ -1,0 +1,1 @@
+from utils.generate_graphs import generate_graphs

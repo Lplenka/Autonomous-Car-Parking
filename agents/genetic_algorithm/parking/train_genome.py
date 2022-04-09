@@ -78,6 +78,6 @@ if __name__ == '__main__':
     start_run = population(train_genome(input, hidden_layer, output),
                    population_size, no_generation, mutation_rate, crossover_rate, 0)
     start_run.run(env, generation, verbose=True,
-          output_folder='./trained_models/')
+          output_folder='./models/')
 
     env.close()
