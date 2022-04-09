@@ -60,16 +60,16 @@ max_episode_length = N_BITS
 #     episode_reward = 0.0
 #     obs = env.reset()
 
-
+model = model_class.load('./her_car_env', env=env)
 env = gym.make("parking-v0")
 her_kwargs = dict(n_sampled_goal=4, goal_selection_strategy='future', online_sampling=True, max_episode_length=100)
-# You can replace TQC with SAC agent
-model = SAC('MultiInputPolicy', env, replay_buffer_class=HerReplayBuffer,
-            replay_buffer_kwargs=her_kwargs, verbose=1, buffer_size=int(1e6),
-            learning_rate=1e-3,
-            gamma=0.95, batch_size=1024, tau=0.05,
-            policy_kwargs=dict(net_arch=[512, 512, 512]))
-model.learn(int(5e4))
+# # You can replace TQC with SAC agent
+# model = SAC('MultiInputPolicy', env, replay_buffer_class=HerReplayBuffer,
+#             replay_buffer_kwargs=her_kwargs, verbose=1, buffer_size=int(1e6),
+#             learning_rate=1e-3,
+#             gamma=0.95, batch_size=1024, tau=0.05,
+#             policy_kwargs=dict(net_arch=[512, 512, 512]))
+# model.learn(int(5e4))
 # model.learn(int(1000))
 
 
