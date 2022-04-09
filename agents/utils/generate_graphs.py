@@ -1,3 +1,4 @@
+import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -45,7 +46,7 @@ class generate_graphs:
             sac_rewards_ep1 = sac_data[1][1]
             count = 1
             for each_episode in sac_data.values():
-                sac_avg_velocity.append(statistics.fmean(each_episode[0]))
+                sac_avg_velocity.append(statistics.mean(each_episode[0]))
                 sac_number_of_steps.append(len(each_episode[1]))
                 episode_list.append(count)
                 count += 1
@@ -57,13 +58,13 @@ class generate_graphs:
         imi_rewards_ep1 = []
         imi_avg_velocity = []
         imi_number_of_steps = []
-        # if 'IMI' in data.keys():
-        #     imi_data = data["IMI"]
-        #     imi_velocities_ep1 = imi_data[1][0]
-        #     imi_rewards_ep1 = imi_data[1][1]
-        #     for each_episode in imi_data.values():
-        #         imi_avg_velocity.append(statistics.fmean(each_episode[0]))
-        #         imi_number_of_steps.append(len(each_episode[1]))
+        if 'IMI' in data.keys():
+            imi_data = data["IMI"]
+            imi_velocities_ep1 = imi_data[1][0]
+            imi_rewards_ep1 = imi_data[1][1]
+            for each_episode in imi_data.values():
+                imi_avg_velocity.append(statistics.mean(each_episode[0]))
+                imi_number_of_steps.append(len(each_episode[1]))
 
         return imi_velocities_ep1, imi_rewards_ep1, imi_avg_velocity, imi_number_of_steps
 
@@ -77,7 +78,7 @@ class generate_graphs:
             gen_velocities_ep1 = gen_data[1][0]
             gen_rewards_ep1 = gen_data[1][1]
             for each_episode in gen_data.values():
-                gen_avg_velocity.append(statistics.fmean(each_episode[0]))
+                gen_avg_velocity.append(statistics.mean(each_episode[0]))
                 gen_number_of_steps.append(len(each_episode[1]))
 
         return gen_velocities_ep1, gen_rewards_ep1, gen_avg_velocity, gen_number_of_steps
@@ -96,10 +97,11 @@ class generate_graphs:
         print('Average Velocity For IMI ==> ', imi_avg_velocity)
         print('Average Velocity For GEN ==> ', gen_avg_velocity)
 
+        plt.figure()
         gen_avg_velocity_new = gen_avg_velocity*len(sac_number_of_steps)
         plt.plot(episode_list, sac_avg_velocity,  color='blue', label='SAC')
-        # plt.plot(episode_list, imi_avg_velocity,
-        #          color='orange', label='Imitation')
+        plt.plot(episode_list, imi_avg_velocity,
+                 color='orange', label='Imitation')
         plt.plot(episode_list, gen_avg_velocity_new,
                  color='green', label='Genetic')
         plt.xlabel('Episodes', fontsize=16)
@@ -107,14 +109,16 @@ class generate_graphs:
         plt.title('Avergae Velocity vs Episodes', fontsize=16)
         plt.grid(True)
         h, l = plt.gca().get_legend_handles_labels()
-        o = [0, 1]
+        o = [0, 1, 2]
         plt.legend([h[i] for i in o], [l[i] for i in o])
-        plt.show()
+        plt.savefig("Avergae Velocity vs Episodes.png")
+        # plt.show()
 
+        plt.figure()
         gen_number_of_steps_new = gen_number_of_steps*len(sac_number_of_steps)
         plt.plot(episode_list, sac_number_of_steps, color='blue', label='SAC')
-        # plt.plot(episode_list, imi_number_of_steps,
-        #          color='orange', label='Imitation')
+        plt.plot(episode_list, imi_number_of_steps,
+                 color='orange', label='Imitation')
         plt.plot(episode_list, gen_number_of_steps_new,
                  color='green', label='Genetic')
         plt.xlabel('Episodes', fontsize=16)
@@ -122,11 +126,13 @@ class generate_graphs:
         plt.title('Total Number of steps vs Episodes', fontsize=16)
         plt.grid(True)
         h, l = plt.gca().get_legend_handles_labels()
-        o = [0, 1]
+        o = [0, 1, 2]
         plt.legend([h[i] for i in o], [l[i] for i in o])
-        plt.show()
+        plt.savefig("Total Number of steps vs Episodes.png")
+        # plt.show()
 
     def plot_velocity_vs_steps(self, sac_velocities_ep1, imi_velocities_ep1, gen_velocities_ep1):
+        plt.figure()
         plt.plot(sac_velocities_ep1, color='blue', label='SAC')
         plt.plot(imi_velocities_ep1, color='orange', label='Imitation')
         plt.plot(gen_velocities_ep1, color='green', label='Genetic')
@@ -137,12 +143,14 @@ class generate_graphs:
         h, l = plt.gca().get_legend_handles_labels()
         o = [0, 1, 2]
         plt.legend([h[i] for i in o], [l[i] for i in o])
-        plt.show()
+        plt.savefig("Velocity vs steps.png")
+        # plt.show()
 
     def plot_rewards_vs_steps(self, sac_rewards_ep1, imi_rewards_ep1, gen_rewards_ep1):
         print('Cumalative reward for SAC ==> ', np.cumsum(sac_rewards_ep1))
         print('Cumalative reward for IMI ==> ', np.cumsum(imi_rewards_ep1))
         print('Cumalative reward for GEN ==> ', np.cumsum(gen_rewards_ep1))
+        plt.figure()
         plt.plot(sac_rewards_ep1, color='blue', label='SAC')
         plt.plot(imi_rewards_ep1, color='orange', label='Imitation')
         plt.plot(gen_rewards_ep1, color='green', label='Genetic')
@@ -153,4 +161,5 @@ class generate_graphs:
         h, l = plt.gca().get_legend_handles_labels()
         o = [0, 1, 2]
         plt.legend([h[i] for i in o], [l[i] for i in o])
-        plt.show()
+        plt.savefig("Rewards vs steps.png")
+        # plt.show()

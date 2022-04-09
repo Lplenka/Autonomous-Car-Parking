@@ -6,8 +6,8 @@ from gym.wrappers import RecordVideo
 from tqdm.notebook import trange
 import gym
 import highway_env
-# import highway_env_custom
-# from imitation.algorithms import bc
+import highway_env_custom
+from imitation.algorithms import bc
 from stable_baselines3.common.vec_env import VecVideoRecorder, DummyVecEnv
 import time
 
@@ -20,12 +20,12 @@ def InitialiseModels(env):
     model_class = SAC
     model_sac = model_class.load('reinforcement_learning/her_car_env', env=env)
 
-    # policy = bc.reconstruct_policy("imitation_her_car_env")
+    policy = bc.reconstruct_policy("imitation_learning/imitation_her_car_env")
 
     mlp_model = create_network(6, 3, 2)
     mlp_model.load(
         './genetic_algorithm/parking/models/parking_genetic_-0.07105057707839282.npy')
-    return model_sac, mlp_model
+    return model_sac, mlp_model, policy
 
 
 def RenderSac(env, model):
@@ -59,10 +59,18 @@ def RenderImitation(policy):
             imi_velocities = []
             imi_rewards = []
             obs = eval_env.reset()
-            for _ in range(video_length):
+            done = False
+            while not done:
+                # action, _ = model.predict(obs)
+                # obs, rewards, done, _ = eval_env.step(action)
+                # obs = obs[0]
+                # v_x, v_y = obs[2], obs[3]
+                # imi_velocities.append(np.sqrt(np.square(v_x) + np.square(v_y)))
+                # imi_rewards.append(rewards)
+                            
                 action, _ = model.predict(obs)
-                obs, rewards, done, _ = eval_env.step(action)
-                v_x, v_y = obs[2], obs[3]
+                obs, rewards, done, _ = eval_env.step(action)              
+                v_x, v_y = obs[0][2], obs[0][3]
                 imi_velocities.append(np.sqrt(np.square(v_x) + np.square(v_y)))
                 imi_rewards.append(rewards)
             imit_episode_dict[episode+1] = [imi_velocities, imi_rewards]
@@ -105,10 +113,10 @@ def Generate_Graphs():
 
 def main():
     env = gym.make("parking-v0")
-    model_sac, model_gen = InitialiseModels(env)
+    model_sac, model_gen, model_policy = InitialiseModels(env)
 
     RenderSac(env, model_sac)
-    # RenderImitation(env, policy)
+    RenderImitation(model_policy)
     RenderGenetic(env, model_gen)
     Generate_Graphs()
 
