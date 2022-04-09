@@ -4,6 +4,15 @@
 \usepackage{algorithm,algorithmic}% http://ctan.org/pkg/algorithms
 \def\UrlFont{\rmfamily}
 
+\newlength\myindent
+\setlength\myindent{2em}
+\newcommand\bindent{%
+  \begingroup
+  \setlength{\itemindent}{\myindent}
+  \addtolength{\algorithmicindent}{\myindent}
+}
+\newcommand\eindent{\endgroup}
+
 \begin{document}
 \mainmatter
 \title{Autonomous Car Parking
@@ -72,18 +81,33 @@ The selected algorithms to be investigated in the project are Soft-Actor-Critic 
 The autonomous vehicle control system consists of mission trajectory planning system generating path for vehicle to reach target, navigation system detecting environment and either moving or fixed target and trajectory tracking controller to navigate the vehicle accordingly \cite{lin2018path}. Path planning problem is the main subject of most autonomous vehicle studies. Prior to path planning, the algorithm needs to know the state of the vehicle such as its position and direction. GPS is commonly used to deduce the state by using signals Line Of Sight (LOS) from positioning satellite but not possible in the context of indoor parking lots \cite{correa2017autonomous} and high-rise buildings \cite{saksena2019towards}. Instead other data such as vision-based sensors and LiDAR sensors are used to monitor the state of vehicle \cite{chan2021review}. The works related to autonomous car parking uses different inputs and types algorithm families, this section mainly focuses on selected algorithms mentioned in Section \ref{sec:introduction}.
 
 % TODO: Soft-Actor-Critic (SAC) related works
+Deep Learning (DL) combined with Reinforcement Learning (RL) enables us to build machine learning models which does not require labelled data to learn about a given task. Reinforcement Learning enables an artificial agent to learn optimal strategy from the environment through trial and error \cite{yu2010introduction}. RL formalizes the premise that rewarding or penalizing an agent for its action increases the likelihood that the agent will repeat or avoid respective behaviour in the future.
+
+Deep Reinforcement Learning (DRL) is useful when the agent needs to make a decision based on more than one contributing element or high-dimensional input data \cite{arulkumaran2017deep}.  Autonomous driving systems constitute of multiple tasks where classical supervised learning methods are no more applicable due its complexity and absence of labelled data.  Use of RL or Deep RL applied to autonomous driving or the self driving domain is an emergent field \cite{sainath2021application}.
+
+The two types of deep reinforcement learning algorithm widely used these days is Policy Optimization and Deep Q Learning. Deep Q learning algorithms try to learn the optimal Q function Q(s,a) with a function approximator Q\_theta(s,a). It generally uses an objective function based on Bellman equation. To the contrary, Policy optimization algorithms try to directly learn the policy pi\_theta(a|s) by optimizing parameters theta by using gradient ascent on performance objective J(pi\_theta). 
+
+The primary advantage of policy optimization approaches is that they are principled, in that we explicitly optimize for what we desire. This makes them more stable and dependable. Q-learning approaches, on the other hand, only indirectly improve agent performance by training Q theta to meet a self-consistency equation. Since there are so many failure scenarios in this type of learning, it is less stable. When they do work, however, Q-learning approaches have the benefit of being far more sample efficient than policy optimization techniques since they can reuse data more efficiently \cite{yang2020nature}. 
+
+There are a number of algorithms that exist on this spectrum and are capable of carefully balancing the strengths and limitations of each side. Soft actor critic (SAC) \cite{sloss20202019} is a variation that stabilizes learning by using stochastic policies, entropy regularization, and a few more methods. After reaching the steady-state phase, the maximum entropy framework in SAC may diminish the efﬁciency of learning outcomes \cite{simon2013evolutionary}.  Highsight experience replay (HER) is a sample-efficient replay approach for off-policy DRL algorithms that allows the agent to learn from both failures and successes, comparable to humans. HER gives the agent a supplemental reward based on the idea of aim, which increases the efficiency of the learning outcomes even if the objective is not met \cite{simon2013evolutionary}.
 
 % TODO: Behaviour Cloning related works
 Behaviour Cloning (BC) is from the Imitation learning family which uses observations from the expert to learn \cite{torabi2018behavioral}. In paper \cite{saksena2019towards} trains a Recurrent Convolutional Network for autonomous driving in lane changing context by using BC to learn from human experts driving vehicles. The paper noted the ease of changing architecture when using BC technique and found that spatio-temporal properties worked well in dynamic environments. The huge advantage of BC algorithm is its end-to-end trainable architecture which uses supervised learning to learn policies from an expert by inferring expert's actions \cite{codevilla2019exploring}\cite{farag2018behavior}\cite{ly2020learning}\cite{saksena2019towards}. However the BC approach suffers from several limitations such as over-fitting and generalisation issue \cite{codevilla2019exploring}. BC algorithm is a simple yet effective approach in the project and it can be used to learn the policies created from other algorithms selected in the project.
 
 % TODO: Evolutionary algorithm related works
-%
+Evolutionary algorithms are algorithms with ability to evolve in order to learn a task. EA’s are based on the concept of survival of the fittest principal of the modern genetic \cite{yu2010introduction}.  Genetic algorithm is a population based metaheuristic algorithm belonging to the family of evolutionary algorithms \cite{yu2010introduction}. Genetic algorithm is inspired by Darwin’s theory of evolution. Genetic algorithm is used to solve complex real world problems, one of which is autonomous cars modelling. In the paper \cite{arulkumaran2017deep} implements the genetic algorithm with the combination of artificial neural network which is also referred as Neuro-evolution to model vehicle dynamics and train autonomous cars. The paper states that evolutionary algorithms evolve via trial and error method over the iterations and hence provide advantages over the data dependent legacy approaches. It is also observed that the use of neural network with genetic algorithm can reduces the initial phase of generalising features and works without any prerequisite data for model training \cite{arulkumaran2017deep}.  One of the notable advantages of genetic algorithm is parallelism. The genomes in the population acts as independent agents, the algorithm is able to explore the search space in all the direction at a time \cite{kiran2021deep}. Although, both genetic algorithm and neural networks largely depend on the choice of parameters such as population size, cross-over and mutation rate, number of network layers. Hence wrong choices can lead to a situation where algorithm may not converge. 
 
 \section{Problem Definition and Algorithm}
 Problem definition and algorithm
 %This section formalises the problem you are addressing and the models used to solve it. This section should provide a technical discussion of the chosen/implemented algorithms. A pseudocode description of the algorithm(s) can also be beneficial to a clear explanation. It is also possible to provide one example that clarifies the way an algorithm works. It is important to highlight in this section the possible parameters involved in the model and their impact, as well as all the implementation choices that can impact the algorithm.
 
 \subsection{Soft-Actor-Critic Algorithm}
+Deep Reinforcement Learning’s goal is to learn a new environment in a short amount of time and then generalize to other situations. In non-simulation contexts, the conditions may go unnoticed throughout training. Sample efficiency is a problem for some of the most effective RL algorithms in recent years, such as trust region policy optimization (TRPO), proximal policy optimization (PPO), and asynchronous actor-critic agents (A3C) \cite{sloss20202019}.
+
+This is because these strategies allow for on-policy learning and necessitate new samples following each policy modification. Using experience replay buffers, Q-learning based off-policy algorithms like DDPG learn efficiently from past samples. However, such approaches are hyper-parameter sensitive and require a great deal of adjustment to converge. SAC is an alternate strategy for accelerating convergence.
+
+HER is a sample-efficient replay method that improves off-policy DRL algorithm performance by allowing the agent to learn from both successes and failures. HER is applied to SAC and propose to help SAC learn more effectively. 
+
 
 \subsection{Behaviour Cloning Algorithm}
 Behaviour Cloning (BC) generates trajectory by learning policy from direct mapping of states to actions without recovering reward function of the expert \cite{osa2018algorithmic}.
@@ -125,6 +149,35 @@ The quadratic loss function also known as $\ell_2$-loss or least squares (LS) in
 The algorithm (\ref{alg:bc_abstract}) is a high-level pseudo-code of the behaviour cloning approach. Line \emph{3} uses supervised learning algorithms with hyper-parameters such as objective function $\mathcal{L}$, optimiser, network architecture, etc.
 
 \subsection{Evolutionary Algorithm}
+EAs are a family of algorithms which are inspired by biological process of natural selection and Darwin’s evolution theory. Neuro-evolutionary algorithms are the combination of neural network and genetic algorithm \cite{arulkumaran2017deep}. Each genome in this algorithm is a neural network. Weights and biases of the neural network are initialized randomly. Each takes the observation from environment as an input and return required actions. Based on these actions fitness score is calculated and returned by the network. The goal of neural network is to optimize the fitness score. Genetic algorithm works based on five stages: Population, Fitness evaluation, Selection, Crossover, Mutation \cite{russell2016artificial}\cite{haarnoja2018soft}.  
+
+\textbf{Population}: Population is set of solution candidates to the problem we are dealing with. These individual candidates are also referred as genomes or chromosomes. Here each genome is a neural network whose weights and biases are randomly initialized. 
+
+\textbf{Fitness evaluation}: Fitness function calculates a fitness score for each individual or genome which is the measure of difference between desired and current state. Each neural network returns a fitness score which is used in selection to generate future individuals.
+
+\textbf{Selection}: Selection is the process of selecting neural networks based on their fitness score as parents for future generations. Selection process can be done in various ways. One of the most common approaches is ranked selection where individuals are order in descending order of their fitness score and those with higher fitness score are selected as parents.
+
+\textbf{Crossover}: Crossover is the process where weights and biases of two neural networks are exchanged with each other. This process is also referred to biological mating where some genes from two individuals are pooled together to obtain new generation. Percentage of genes to be exchanged depends on crossover rate. New individuals which are referred as offspring are created until the crossover point is reached. These new individuals are further added to the population.
+
+\textbf{Mutation}: Mutation is the process where some of the weights and biases of the neural network are flipped based on low probability. Mutation ensures that the population has diversity in population and further increases the search space for the algorithm.
+
+\begin{algorithm}
+  \caption{Genetic Algorithm pseudocode \cite{zouita2019improving}}
+  \label{alg:ga_pseudo}
+  \begin{algorithmic}[1]
+    \STATE Random population initialization  \label{op0}
+    \STATE Fitness evaluation of the population individuals \label{op1}
+    \STATE Repeat \label{op2}
+    \bindent
+    \STATE Select neural networks with high fitness score as parents 
+    \STATE Generate new individuals by crossover process
+    \STATE Perform mutation on the newly created individuals
+    \STATE Fitness evaluation of the newly created individuals
+    \STATE Replace old worst individuals with new best individuals
+    \eindent
+    \STATE Stop until termination criteria     
+  \end{algorithmic}
+\end{algorithm}
 
 %\subsection{Subsection Title}
 
