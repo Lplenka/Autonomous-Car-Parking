@@ -8,14 +8,15 @@ This repo contains the code for our AI project titled "AI algorithms for Autonom
 │   ├── reinforcement_learning
 │   │   ├── sac_her_agent.py
 │   │   ├── a2c_agent.py
+│   ├── reinforcement_learning
+│   │   ├── imitation_sac_agent.py
+│   │   ├── load_imitation.py.py
 │   ├── genetic_algorithm
-│   ├── monte_carlo_tree_search
+│   │   ├── parking
+├── custom_libraries
+│   ├── highway-env-custom
+│   ├── imitation
 ├── minutes
-├── notebooks
-│       ├── reinforcement_learning
-│   │   ├── parking_sac_her.ipynb
-│   ├── genetic_algorithm
-│   ├── monte_carlo_tree_search
 ├── report
 ├── requirements.txt
 ├──.gitignore  
@@ -23,6 +24,10 @@ This repo contains the code for our AI project titled "AI algorithms for Autonom
 ```
 
 ## Installation
+
+#### Custom libraries
+We have used a custom ```highway-env``` library and imitation learning latest version in their github repository. To install it, ```cd``` into the folder and run ```pip install -e .```.
+
 #### Conda
 Move to the root folder
 ```
