@@ -78,15 +78,11 @@ def RenderGenetic(env, mlp_model):
     env = RecordVideo(env, video_folder='./genetic_algorithm/parking/videos',
                       episode_trigger=lambda e: True)
     env.unwrapped.set_record_video_wrapper(env)
-    t_values = [40, 58, 70, 55, 39, 75, 65, 62, 48,
-                58, 45, 52, 72, 51, 35, 79, 61, 68, 42, 58]
     for episode in trange(number_of_episodes, desc="Test episodes"):
         gen_velocities = []
         gen_rewards = []
-        iters = random.choice(t_values)
-        if episode == 0:
-            env.seed(123)
-            iters = 58
+        iters= 58
+        env.seed(123)
         observation = env.reset()
         observation = observation["observation"]
         for _ in range(iters):
