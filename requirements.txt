@@ -3,3 +3,5 @@ gym==0.21.0
 stable-baselines3==1.5.0
 tqdm==4.63.1
 ipywidgets==7.7.0
+box2d-py==2.3.8
+
