@@ -35,3 +35,11 @@ conda create --name aiproject python=3.8
 conda activate aiproject
 pip install -r requirements.txt
 ```
+### Execution
+```
+conda activate aiproject
+python main.py
+```
+
+### Reference 
+Genetic algorithm: https://github.com/robertjankowski/ga-openai-gym
