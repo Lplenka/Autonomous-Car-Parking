@@ -24,15 +24,16 @@ class generate_graphs:
         pd.set_option('display.width', 1000)
 
     def process_data(self, data):
-        sac_velocities_ep1, sac_rewards_ep1, sac_avg_velocity, sac_number_of_steps, episode_list = self.process_sac_data(
+        sac_velocities_ep1, sac_rewards_ep1, sac_avg_velocity, sac_number_of_steps, episode_list, sac_cumulative_reward = self.process_sac_data(
             data)
-        imi_velocities_ep1, imi_rewards_ep1, imi_avg_velocity, imi_number_of_steps = self.process_imi_data(
+        imi_velocities_ep1, imi_rewards_ep1, imi_avg_velocity, imi_number_of_steps, imi_cumulative_reward = self.process_imi_data(
             data)
-        gen_velocities_ep1, gen_rewards_ep1, gen_avg_velocity, gen_number_of_steps = self.process_gen_data(
+        gen_velocities_ep1, gen_rewards_ep1, gen_avg_velocity, gen_number_of_steps, gen_cumulative_reward = self.process_gen_data(
             data)
 
         self.plot_graphs(sac_velocities_ep1, sac_rewards_ep1, imi_velocities_ep1, imi_rewards_ep1, gen_velocities_ep1, gen_rewards_ep1,
-                         sac_avg_velocity, sac_number_of_steps, imi_avg_velocity, imi_number_of_steps, gen_avg_velocity, gen_number_of_steps, episode_list)
+                         sac_avg_velocity, sac_number_of_steps, imi_avg_velocity, imi_number_of_steps, gen_avg_velocity, gen_number_of_steps, episode_list,
+                         sac_cumulative_reward, imi_cumulative_reward, gen_cumulative_reward)
 
     def process_sac_data(self, data):
         sac_velocities_ep1 = []
@@ -40,6 +41,7 @@ class generate_graphs:
         sac_avg_velocity = []
         sac_number_of_steps = []
         episode_list = []
+        sac_cumulative_reward = []
         if 'SAC' in data.keys():
             sac_data = data["SAC"]
             sac_velocities_ep1 = sac_data[1][0]
@@ -49,15 +51,18 @@ class generate_graphs:
                 sac_avg_velocity.append(statistics.mean(each_episode[0]))
                 sac_number_of_steps.append(len(each_episode[1]))
                 episode_list.append(count)
+                sac_cumulative_reward.append(
+                    np.cumsum(each_episode[1])[-1])
                 count += 1
 
-        return sac_velocities_ep1, sac_rewards_ep1, sac_avg_velocity, sac_number_of_steps, episode_list
+        return sac_velocities_ep1, sac_rewards_ep1, sac_avg_velocity, sac_number_of_steps, episode_list, sac_cumulative_reward
 
     def process_imi_data(self, data):
         imi_velocities_ep1 = []
         imi_rewards_ep1 = []
         imi_avg_velocity = []
         imi_number_of_steps = []
+        imi_cumulative_reward = []
         if 'IMI' in data.keys():
             imi_data = data["IMI"]
             imi_velocities_ep1 = imi_data[1][0]
@@ -65,14 +70,16 @@ class generate_graphs:
             for each_episode in imi_data.values():
                 imi_avg_velocity.append(statistics.mean(each_episode[0]))
                 imi_number_of_steps.append(len(each_episode[1]))
+                imi_cumulative_reward.append(np.cumsum(each_episode[1])[-1])
 
-        return imi_velocities_ep1, imi_rewards_ep1, imi_avg_velocity, imi_number_of_steps
+        return imi_velocities_ep1, imi_rewards_ep1, imi_avg_velocity, imi_number_of_steps, imi_cumulative_reward
 
     def process_gen_data(self, data):
         gen_velocities_ep1 = []
         gen_rewards_ep1 = []
         gen_avg_velocity = []
         gen_number_of_steps = []
+        gen_cumulative_reward = []
         if 'GEN' in data.keys():
             gen_data = data["GEN"]
             gen_velocities_ep1 = gen_data[1][0]
@@ -80,11 +87,18 @@ class generate_graphs:
             for each_episode in gen_data.values():
                 gen_avg_velocity.append(statistics.mean(each_episode[0]))
                 gen_number_of_steps.append(len(each_episode[1]))
+                gen_cumulative_reward.append(np.cumsum(each_episode[1])[-1])
 
-        return gen_velocities_ep1, gen_rewards_ep1, gen_avg_velocity, gen_number_of_steps
+        return gen_velocities_ep1, gen_rewards_ep1, gen_avg_velocity, gen_number_of_steps, gen_cumulative_reward
 
     def plot_graphs(self, sac_velocities_ep1, sac_rewards_ep1, imi_velocities_ep1, imi_rewards_ep1, gen_velocities_ep1, gen_rewards_ep1,
-                    sac_avg_velocity, sac_number_of_steps, imi_avg_velocity, imi_number_of_steps, gen_avg_velocity, gen_number_of_steps, episode_list):
+                    sac_avg_velocity, sac_number_of_steps, imi_avg_velocity, imi_number_of_steps, gen_avg_velocity, gen_number_of_steps, episode_list, sac_cumulative_reward, imi_cumulative_reward, gen_cumulative_reward):
+        print('Cumulative Rewards For SAC for all episodes ==> ',
+              sac_cumulative_reward)
+        print('Cumulative Rewards For IMI for all episodes ==> ',
+              imi_cumulative_reward)
+        print('Cumulative Rewards For GEN for all episodes  ==> ',
+              gen_cumulative_reward)
         self.plot_velocity_vs_steps(
             sac_velocities_ep1, imi_velocities_ep1, gen_velocities_ep1)
         self.plot_rewards_vs_steps(
@@ -98,11 +112,10 @@ class generate_graphs:
         print('Average Velocity For GEN ==> ', gen_avg_velocity)
 
         plt.figure()
-        gen_avg_velocity_new = gen_avg_velocity*len(sac_number_of_steps)
         plt.plot(episode_list, sac_avg_velocity,  color='blue', label='SAC')
         plt.plot(episode_list, imi_avg_velocity,
                  color='orange', label='Imitation')
-        plt.plot(episode_list, gen_avg_velocity_new,
+        plt.plot(episode_list, gen_avg_velocity,
                  color='green', label='Genetic')
         plt.xlabel('Episodes', fontsize=16)
         plt.ylabel('Average Velocity', fontsize=16)
@@ -115,11 +128,10 @@ class generate_graphs:
         # plt.show()
 
         plt.figure()
-        gen_number_of_steps_new = gen_number_of_steps*len(sac_number_of_steps)
         plt.plot(episode_list, sac_number_of_steps, color='blue', label='SAC')
         plt.plot(episode_list, imi_number_of_steps,
                  color='orange', label='Imitation')
-        plt.plot(episode_list, gen_number_of_steps_new,
+        plt.plot(episode_list, gen_number_of_steps,
                  color='green', label='Genetic')
         plt.xlabel('Episodes', fontsize=16)
         plt.ylabel('Total Number of steps', fontsize=16)
@@ -150,6 +162,19 @@ class generate_graphs:
         print('Cumalative reward for SAC ==> ', np.cumsum(sac_rewards_ep1))
         print('Cumalative reward for IMI ==> ', np.cumsum(imi_rewards_ep1))
         print('Cumalative reward for GEN ==> ', np.cumsum(gen_rewards_ep1))
+        plt.figure()
+        plt.plot(np.cumsum(sac_rewards_ep1), color='blue', label='SAC')
+        plt.plot(np.cumsum(imi_rewards_ep1), color='orange', label='Imitation')
+        plt.plot(np.cumsum(gen_rewards_ep1), color='green', label='Genetic')
+        plt.xlabel('Steps', fontsize=16)
+        plt.ylabel('Cumalative Reward', fontsize=16)
+        plt.title('Cumalative Reward vs steps', fontsize=16)
+        plt.grid(True)
+        h, l = plt.gca().get_legend_handles_labels()
+        o = [0, 1, 2]
+        plt.legend([h[i] for i in o], [l[i] for i in o])
+        plt.savefig("Cumalative Reward vs steps.png")
+
         plt.figure()
         plt.plot(sac_rewards_ep1, color='blue', label='SAC')
         plt.plot(imi_rewards_ep1, color='orange', label='Imitation')

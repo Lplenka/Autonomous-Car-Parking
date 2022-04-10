@@ -6,6 +6,7 @@ from gym.wrappers import RecordVideo
 from tqdm.notebook import trange
 import gym
 import highway_env
+import random
 import highway_env_custom
 from imitation.algorithms import bc
 from stable_baselines3.common.vec_env import VecVideoRecorder, DummyVecEnv
@@ -14,6 +15,7 @@ import time
 sac_episode_dict = {}
 imit_episode_dict = {}
 gen_episode_dict = {}
+number_of_episodes = 3
 
 
 def InitialiseModels(env):
@@ -33,7 +35,7 @@ def RenderSac(env, model):
                       episode_trigger=lambda e: True)
     env.unwrapped.set_record_video_wrapper(env)
 
-    for episode in trange(3, desc="Test episodes"):
+    for episode in trange(number_of_episodes, desc="Test episodes"):
         sac_velocities = []
         sac_rewards = []
         obs, done = env.reset(), False
@@ -55,21 +57,14 @@ def RenderImitation(policy):
                                     record_video_trigger=lambda step: step == 0, video_length=video_length,
                                     name_prefix=prefix)
 
-        for episode in trange(3, desc="Test episodes"):
+        for episode in trange(number_of_episodes, desc="Test episodes"):
             imi_velocities = []
             imi_rewards = []
             obs = eval_env.reset()
             done = False
             while not done:
-                # action, _ = model.predict(obs)
-                # obs, rewards, done, _ = eval_env.step(action)
-                # obs = obs[0]
-                # v_x, v_y = obs[2], obs[3]
-                # imi_velocities.append(np.sqrt(np.square(v_x) + np.square(v_y)))
-                # imi_rewards.append(rewards)
-                            
                 action, _ = model.predict(obs)
-                obs, rewards, done, _ = eval_env.step(action)              
+                obs, rewards, done, _ = eval_env.step(action)
                 v_x, v_y = obs[0][2], obs[0][3]
                 imi_velocities.append(np.sqrt(np.square(v_x) + np.square(v_y)))
                 imi_rewards.append(rewards)
@@ -83,22 +78,28 @@ def RenderGenetic(env, mlp_model):
     env = RecordVideo(env, video_folder='./genetic_algorithm/parking/videos',
                       episode_trigger=lambda e: True)
     env.unwrapped.set_record_video_wrapper(env)
-    gen_velocities = []
-    gen_rewards = []
-    env.seed(123)
-    observation = env.reset()
-    observation = observation["observation"]
-    for _ in range(58):
-        env.render()
-        action = mlp_model.forward(observation)
-        observation, reward, done, info = env.step(action)
+    t_values = [40, 58, 70, 55, 39, 75, 65, 62, 48,
+                58, 45, 52, 72, 51, 35, 79, 61, 68, 42, 58]
+    for episode in trange(number_of_episodes, desc="Test episodes"):
+        gen_velocities = []
+        gen_rewards = []
+        iters = random.choice(t_values)
+        if episode == 0:
+            env.seed(123)
+            iters = 58
+        observation = env.reset()
         observation = observation["observation"]
-        v_x, v_y = observation[2], observation[3]
-        gen_velocities.append(np.sqrt(np.square(v_x) + np.square(v_y)))
-        gen_rewards.append(reward)
-        if done:
-            break
-    gen_episode_dict[1] = [gen_velocities, gen_rewards]
+        for _ in range(iters):
+            env.render()
+            action = mlp_model.forward(observation)
+            observation, reward, done, info = env.step(action)
+            observation = observation["observation"]
+            v_x, v_y = observation[2], observation[3]
+            gen_velocities.append(np.sqrt(np.square(v_x) + np.square(v_y)))
+            gen_rewards.append(reward)
+            if done:
+                break
+        gen_episode_dict[episode+1] = [gen_velocities, gen_rewards]
     env.close()
 
 
@@ -114,7 +115,6 @@ def Generate_Graphs():
 def main():
     env = gym.make("parking-v0")
     model_sac, model_gen, model_policy = InitialiseModels(env)
-
     RenderSac(env, model_sac)
     RenderImitation(model_policy)
     RenderGenetic(env, model_gen)
