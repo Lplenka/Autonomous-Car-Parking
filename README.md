@@ -74,8 +74,8 @@ below evaluation matrices:
 ## Results
 
 <p align="center">
-  <img alt="result video" src="exp_results\Rewards vs steps.png"  width="500" height="400"/>
-  <img alt="result video" src="exp_results\Velocity vs steps.png" width="500" height="400"/ style="padding-left:20px;">
+  <img alt="result video" src="exp_results\Rewards vs steps.png"  width="300" height="200"/>
+  <img alt="result video" src="exp_results\Velocity vs steps.png" width="300" height="200"/ style="padding-left:20px;">
 </p>
 
 1) We can observe that the rewards for all three algorithms are gradually increasing with steps taken. Both SAC and imitation algorithm achieves lowest reward of -0.1 as the run progresses whereas genetic algorithm achieves a lowest reward of -0.3 at the end of the run. SAC and imitation algorithm clearly outperforms genetic algorithm and are able  to perform the task efficiently.
