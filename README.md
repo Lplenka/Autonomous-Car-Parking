@@ -3,7 +3,9 @@
 This repo contains the code for our AI project titled "AI algorithms for Autonomous Car Parking".
 
 
-[![result video](Comparision_Results\Autonomous_Parking.mp4)
+[![result video](https://github.com/Lplenka/Autonomous-Car-Parking/blob/main/comparision_results/Autonomous_Parking.mp4)
+
+
 
 ## Folder Structure
 ```bash
