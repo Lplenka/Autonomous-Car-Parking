@@ -68,8 +68,8 @@ algorithm for one episode. Initial and goal state for SAC-HER and imitation
 algorithms were different for each episode where as these two were kept same
 for genetic algorithm. The performance of each algorithm is evaluated based on
 below evaluation matrices:
-– Cumulative reward across all the episodes
-– Average velocity across all the episodes
+- Cumulative reward across all the episodes
+- Average velocity across all the episodes
 
 ## Results
 
